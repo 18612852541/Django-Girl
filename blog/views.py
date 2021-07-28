@@ -1,8 +1,18 @@
-from django.shortcuts import render
 from django.utils import timezone
 from .models import Post
 from django.shortcuts import render, get_object_or_404,redirect
 from .forms import PostForm
+from rest_framework import serializers,viewsets
+from blog.models import Articles
+
+class ArticlesSerializers(serializers.ModelSerializer)：
+    class Meta:
+        model = Articles
+        fields = ('author','title','text','created_date')
+
+class GetArticleInfo(viewsets.ModelViewSet):
+    queryset = Articles.objects.all().order_by('-author')
+    serializers_class = ArticlesSerializers
 
 
 def post_list(request):
